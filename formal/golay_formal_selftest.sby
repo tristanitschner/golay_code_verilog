@@ -1,0 +1,25 @@
+[tasks]
+bmc
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 30
+cover: mode cover
+cover: depth 30
+
+[engines]
+bmc: smtbmc
+cover: smtbmc
+
+[script]
+read_verilog golay_enc.v
+read_verilog golay_dec.v
+read_verilog -formal golay_formal_selftest.v
+
+prep -top golay_formal_selftest
+
+[files]
+../rtl/golay_enc.v
+../rtl/golay_dec.v
+../formal_rtl/golay_formal_selftest.v

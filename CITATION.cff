@@ -1,0 +1,10 @@
+# See https://citation-file-format.github.io/
+cff-version: 1.2.0
+title: golay_code_verilog
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - given-names: Tristan
+    family-names: Itschner
+    orcid: 'https://orcid.org/0009-0007-4641-0434'
+repository-code: 'https://github.com/tristanitschner/golay_code_verilog'
