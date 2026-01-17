@@ -56,3 +56,11 @@ repository! Just be careful and refactor the code somewhat nice, such that
 there is no code deduplication.
 
 Codes like this are used for space communication, so have fun!
+
+Similar Projects
+----------------
+
+https://github.com/Lcrypto/FEC-Archive-Verilog
+
+They ^ also contain a Golay code Verilog implementation, but mine is way more readable
+and simple in comparison :D
