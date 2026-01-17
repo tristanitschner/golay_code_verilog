@@ -123,9 +123,7 @@ wire [3:0] w1 = weight(s_a);
 wire [3:0] w2 [0:11];
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-
     assign w2[gi] = weight(s_a ^ B[gi]);
-
 end endgenerate
 
 wire [3:0] w3 = weight(s_b);
@@ -133,56 +131,50 @@ wire [3:0] w3 = weight(s_b);
 wire [3:0] w4 [0:11];
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-
     assign w4[gi] = weight(s_b ^ B[gi]);
-
 end endgenerate
+
+////////////////////////////////////////////////////////////////////////////////
+
+function [3:0] match2index(input [11:0] match);
+	(* full_case, parallel_case *)
+	casez (match)
+		12'b1???_????_????: match2index = 11;
+		12'b?1??_????_????: match2index = 10;
+		12'b??1?_????_????: match2index = 9;
+		12'b???1_????_????: match2index = 8;
+		12'b????_1???_????: match2index = 7;
+		12'b????_?1??_????: match2index = 6;
+		12'b????_??1?_????: match2index = 5;
+		12'b????_???1_????: match2index = 4;
+		12'b????_????_1???: match2index = 3;
+		12'b????_????_?1??: match2index = 2;
+		12'b????_????_??1?: match2index = 1;
+		12'b????_????_???1: match2index = 0;
+	endcase
+endfunction
 
 ////////////////////////////////////////////////////////////////////////////////
 
 wire do_w1 = w1 <= 3;
 
-reg do_w2; /* wire */
-always @(*) begin
-    do_w2 = 0;
-    for (i = 0; i < 12; i = i + 1) begin
-        if (w2[i] <= 2) begin
-            do_w2 = 1;
-        end
-    end
-end
+wire [11:0] w2_matches;
+generate for (gi = 0; gi < 12; gi = gi + 1) begin
+	assign w2_matches[gi] = w2[gi] <= 2;
+end endgenerate
 
-reg [3:0] w2_index; /* wire */
-always @(*) begin
-    w2_index = 0;
-    for (i = 11; i >= 0; i = i - 1) begin
-        if (w2[i] <= 2) begin
-            w2_index = i;
-        end
-    end
-end
+wire do_w2 = |(w2_matches);
+wire [3:0] w2_index = match2index(w2_matches);
 
 wire do_w3 = w3 <= 3;
 
-reg do_w4; /* wire */
-always @(*) begin
-    do_w4 = 0;
-    for (i = 0; i < 12; i = i + 1) begin
-        if (w4[i] <= 2) begin
-            do_w4 = 1;
-        end
-    end
-end
+wire [11:0] w4_matches;
+generate for (gi = 0; gi < 12; gi = gi + 1) begin
+	assign w4_matches[gi] = w4[gi] <= 2;
+end endgenerate
 
-reg [3:0] w4_index; /* wire */
-always @(*) begin
-    w4_index = 0;
-    for (i = 11; i >= 0; i = i - 1) begin
-        if (w4[i] <= 2) begin
-            w4_index = i;
-        end
-    end
-end
+wire do_w4 = |(w4_matches);
+wire [3:0] w4_index = match2index(w4_matches);
 
 ////////////////////////////////////////////////////////////////////////////////
 

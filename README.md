@@ -30,19 +30,19 @@ Resource usage is very low, and logic depth is fairly low:
 +-----------+--------+------------+------------+---------+------+-----+--------+--------+------+------------+
 |  Instance | Module | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | URAM | DSP Blocks |
 +-----------+--------+------------+------------+---------+------+-----+--------+--------+------+------------+
-| golay_dec |  (top) |        209 |        209 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
+| golay_dec |  (top) |        173 |        173 |       0 |    0 |   0 |      0 |      0 |    0 |          0 |
 +-----------+--------+------------+------------+---------+------+-----+--------+--------+------+------------+
-+-----------------+-------------+---+----+
-| End Point Clock | Requirement | 9 | 10 |
-+-----------------+-------------+---+----+
-| (none)          | 0.000ns     | 1 | 36 |
-+-----------------+-------------+---+----+
++-----------------+-------------+----+
+| End Point Clock | Requirement |  8 |
++-----------------+-------------+----+
+| (none)          | 0.000ns     | 37 |
++-----------------+-------------+----+
 
 ```
 
 If you integrate this code into a larger design, you will probably need to add
 some input and output register slices to the decoder, in order to improve its
-timing! Currently its OOC delay is 2.267 ns for US+ speed grade -3, so that
+timing! Currently its OOC delay is 1.812 ns for US+ speed grade -3, so that
 should only be necessary in case of a high-frequency design. There is also the
 option to pipeline the decoder and spread its logic over several pipeline
 stages, I just haven't seen the need for it really, but feel free to add an
