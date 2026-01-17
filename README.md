@@ -3,8 +3,13 @@ Golay Code Verilog Implementation
 
 An implementation of an extended binary Golay encoder and sophisticated
 low-resource decoder in Verilog. Code in question: [24,12,8]. Corresponding
-group: G12. This code maps 12 input bits to 24 output bits, and is able to
-correct up to three errors, and detect four errors.
+group: M24 (the largest of the Mathieu groups). This code maps 12 input bits to
+24 output bits, and is able to correct up to three errors, and detect four
+errors.
+
+For anyone that cares: This code only exists, because in our universe by chance
+(sic!) the following relation holds: C(90 0) + C(90 1) + C(90 2) = 1 + 90 +
+4005 = 4096 = 2^12 is a power of two.
 
 The encoder and decoder have been formally verified, you can find the
 self-testing testbench in this repository. Also this lead to the discovery of
