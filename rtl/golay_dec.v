@@ -186,12 +186,20 @@ end
 
 ////////////////////////////////////////////////////////////////////////////////
 
-wire [23:0] error = 
-    do_w1 ? e_s_1 :
-    do_w2 ? e_s_2[w2_index] : 
-    do_w3 ? e_s_3 :
-    do_w4 ? e_s_4[w4_index] :
-    24'bx;
+wire [23:0] error;
+reg [23:0] c_error; /* wire */
+
+always @(*) begin
+	(* full_case, parallel_case *)
+	casez ({do_w1, do_w2, do_w3, do_w4})
+		4'b1???: c_error = e_s_1;
+		4'b?1??: c_error = e_s_2[w2_index];
+		4'b??1?: c_error = e_s_3;
+		4'b???1: c_error = e_s_4[w4_index];
+	endcase
+end
+
+assign error = c_error;
 
 assign m_error = error;
 
