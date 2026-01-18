@@ -14,7 +14,7 @@ cover: smtbmc
 
 [script]
 read_verilog golay_enc.v
-read_verilog golay_dec.v
+read_verilog -formal golay_dec.v
 read_verilog -formal golay_formal_selftest.v
 
 prep -top golay_formal_selftest

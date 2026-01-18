@@ -40,7 +40,8 @@ module golay_formal_selftest (
     input  wire [11:0] s_data,
     input  wire [23:0] error,
     output wire [11:0] m_data,
-    output wire        m_corrupt
+    output wire        m_corrupt,
+    output wire [23:0] m_error
 );
 
 wire [23:0] i_data;
@@ -55,11 +56,16 @@ golay_enc golay_enc_inst (
 assign i_data2 = i_data ^ error;
 
 golay_dec golay_dec_inst (
-    .clk (clk),
+    .clk       (clk),
     .s_data    (i_data2),
     .m_data    (m_data),
-    .m_corrupt (m_corrupt)
+    .m_corrupt (m_corrupt),
+    .m_error   (m_error)
 );
+
+always @(posedge clk) begin
+	assume($countones(error) <= 4);
+end
 
 always @(posedge clk) begin
     if ($countones(error) == 4) begin
@@ -68,6 +74,7 @@ always @(posedge clk) begin
     if ($countones(error) <= 3) begin
         assert(!m_corrupt);
         assert(m_data == s_data);
+	assert(error == m_error);
     end
 end
 

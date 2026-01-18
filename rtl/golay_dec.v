@@ -137,7 +137,6 @@ end endgenerate
 ////////////////////////////////////////////////////////////////////////////////
 
 function [3:0] match2index(input [11:0] match);
-	(* full_case, parallel_case *)
 	casez (match)
 		12'b1???_????_????: match2index = 11;
 		12'b?1??_????_????: match2index = 10;
@@ -151,6 +150,7 @@ function [3:0] match2index(input [11:0] match);
 		12'b????_????_?1??: match2index = 2;
 		12'b????_????_??1?: match2index = 1;
 		12'b????_????_???1: match2index = 0;
+		default: match2index = 0;
 	endcase
 endfunction
 
@@ -180,17 +180,15 @@ wire [3:0] w4_index = match2index(w4_matches);
 
 wire [23:0] error;
 reg [23:0] c_error; /* wire */
-
 always @(*) begin
-	(* full_case, parallel_case *)
 	casez ({do_w1, do_w2, do_w3, do_w4})
 		4'b1???: c_error = e_s_1;
 		4'b?1??: c_error = e_s_2[w2_index];
 		4'b??1?: c_error = e_s_3;
 		4'b???1: c_error = e_s_4[w4_index];
+		default: c_error = 0;
 	endcase
 end
-
 assign error = c_error;
 
 assign m_error = error;
@@ -200,5 +198,17 @@ wire [23:0] s_data_corrected = s_data ^ error;
 assign m_data = s_data_corrected[11:0];
 
 assign m_corrupt = {do_w1, do_w2, do_w3, do_w4} == 0;
+
+`ifdef FORMAL
+
+	always @(posedge clk) begin
+		// these fail, so please don't add any full_case,
+		// parallel_case attributes!
+		// assert($onehot({do_w1, do_w2, do_w3, do_w4}));
+		// assert($onehot(w2_matches));
+		// assert($onehot(w4_matches));
+	end
+
+`endif /* FORMAL */
 
 endmodule
