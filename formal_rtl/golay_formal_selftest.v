@@ -36,31 +36,31 @@
 `default_nettype none
 
 module golay_formal_selftest (
-    input  wire clk,
-    input  wire [11:0] s_data,
-    input  wire [23:0] error,
-    output wire [11:0] m_data,
-    output wire        m_corrupt,
-    output wire [23:0] m_error
+	input  wire clk,
+	input  wire [11:0] s_data,
+	input  wire [23:0] error,
+	output wire [11:0] m_data,
+	output wire        m_corrupt,
+	output wire [23:0] m_error
 );
 
 wire [23:0] i_data;
 wire [23:0] i_data2;
 
 golay_enc golay_enc_inst (
-    .clk    (clk),
-    .s_data (s_data),
-    .m_data (i_data)
+	.clk    (clk),
+	.s_data (s_data),
+	.m_data (i_data)
 );
 
 assign i_data2 = i_data ^ error;
 
 golay_dec golay_dec_inst (
-    .clk       (clk),
-    .s_data    (i_data2),
-    .m_data    (m_data),
-    .m_corrupt (m_corrupt),
-    .m_error   (m_error)
+	.clk       (clk),
+	.s_data    (i_data2),
+	.m_data    (m_data),
+	.m_corrupt (m_corrupt),
+	.m_error   (m_error)
 );
 
 always @(posedge clk) begin
@@ -68,14 +68,14 @@ always @(posedge clk) begin
 end
 
 always @(posedge clk) begin
-    if ($countones(error) == 4) begin
-        assert(m_corrupt);
-    end
-    if ($countones(error) <= 3) begin
-        assert(!m_corrupt);
-        assert(m_data == s_data);
-	assert(error == m_error);
-    end
+	if ($countones(error) == 4) begin
+		assert(m_corrupt);
+	end
+	if ($countones(error) <= 3) begin
+		assert(!m_corrupt);
+		assert(m_data == s_data);
+		assert(error == m_error);
+	end
 end
 
 reg [31:0] uncorrected_beats_out = 0;

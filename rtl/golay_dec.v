@@ -45,11 +45,11 @@
 // Design of a High-Throughput Low-Latency Extended Golay Decoder / IEEE / 2017
 
 module golay_dec (
-    input wire clk,
-    input  wire [23:0] s_data,
-    output wire [11:0] m_data,
-    output wire        m_corrupt,
-    output wire [23:0] m_error // error vector, might wanna record statistics :)
+	input wire clk,
+	input  wire [23:0] s_data,
+	output wire [11:0] m_data,
+	output wire        m_corrupt,
+	output wire [23:0] m_error // error vector, might wanna record statistics :)
 );
 
 integer i;
@@ -75,27 +75,27 @@ assign B[11] = 12'b011111111111;
 wire [11:0] s_a;
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-    assign s_a[gi] = (^(B[gi] & s_data[11:0])) ^ s_data[12+gi];
+	assign s_a[gi] = (^(B[gi] & s_data[11:0])) ^ s_data[12+gi];
 end endgenerate
 
 wire [11:0] s_b;
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-    assign s_b[gi] = (^(B[gi] & s_data[23:12])) ^ s_data[gi];
+	assign s_b[gi] = (^(B[gi] & s_data[23:12])) ^ s_data[gi];
 end endgenerate
 
 ////////////////////////////////////////////////////////////////////////////////
 
 function [3:0] weight(input [11:0] x);
-    integer i;
-    begin
-        weight = 0;
-        for (i = 0; i < 12; i = i + 1) begin
-            if (x[i]) begin
-                weight = weight + 1;
-            end
-        end
-    end
+	integer i;
+	begin
+		weight = 0;
+		for (i = 0; i < 12; i = i + 1) begin
+			if (x[i]) begin
+				weight = weight + 1;
+			end
+		end
+	end
 endfunction
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ wire [23:0] e_s_1 = {s_a, 12'b0};
 wire [23:0] e_s_2 [0:11];
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-    assign e_s_2[gi] = {s_a ^ B[gi], 12'h001 << gi};
+	assign e_s_2[gi] = {s_a ^ B[gi], 12'h001 << gi};
 end endgenerate
 
 wire [23:0] e_s_3 = {12'b0, s_b};
@@ -113,7 +113,7 @@ wire [23:0] e_s_3 = {12'b0, s_b};
 wire [23:0] e_s_4 [0:11];
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-    assign e_s_4[gi] = {12'h001 << gi, s_b ^ B[gi]}; // wrong in paper
+	assign e_s_4[gi] = {12'h001 << gi, s_b ^ B[gi]}; // wrong in paper
 end endgenerate
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ wire [3:0] w1 = weight(s_a);
 wire [3:0] w2 [0:11];
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-    assign w2[gi] = weight(s_a ^ B[gi]);
+	assign w2[gi] = weight(s_a ^ B[gi]);
 end endgenerate
 
 wire [3:0] w3 = weight(s_b);
@@ -131,7 +131,7 @@ wire [3:0] w3 = weight(s_b);
 wire [3:0] w4 [0:11];
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-    assign w4[gi] = weight(s_b ^ B[gi]);
+	assign w4[gi] = weight(s_b ^ B[gi]);
 end endgenerate
 
 ////////////////////////////////////////////////////////////////////////////////

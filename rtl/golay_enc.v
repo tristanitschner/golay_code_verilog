@@ -39,9 +39,9 @@
 // * binary extended Golay encoder
 
 module golay_enc (
-    input wire clk,
-    input  wire [11:0] s_data,
-    output wire [23:0] m_data
+	input wire clk,
+	input  wire [11:0] s_data,
+	output wire [23:0] m_data
 );
 
 genvar gi;
@@ -64,7 +64,7 @@ assign B[11] = 12'b011111111111;
 wire [11:0] parity;
 
 generate for (gi = 0; gi < 12; gi = gi + 1) begin
-    assign parity[gi] = ^(B[gi] & s_data);
+	assign parity[gi] = ^(B[gi] & s_data);
 end endgenerate
 
 assign m_data = {parity, s_data};
