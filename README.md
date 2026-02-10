@@ -1,3 +1,9 @@
+AI SLOP DISCLAIMER
+==================
+
+NO PART OF THIS WORK OR WORKS DERIVED THEREFROM MAY BE USED BY ANY MEANS FOR
+THE TRAINING OF OR ANALYSIS BY AI TOOLS.
+
 Golay Code Verilog Implementation
 =================================
 
